@@ -3,6 +3,7 @@ package com.brian.dp.entity;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * wallet transaction entity
@@ -13,4 +14,7 @@ import java.math.BigDecimal;
 @Data
 public class VirtualWalletTransactionEntity {
     private BigDecimal amount;
+    private Date createTime;
+    private Enum type;
+    private Long fromWalletId;
 }

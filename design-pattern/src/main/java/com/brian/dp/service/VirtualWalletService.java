@@ -1,12 +1,15 @@
 package com.brian.dp.service;
 
+import com.brian.dp.constants.TransactionType;
 import com.brian.dp.domain.VirtualWallet;
 import com.brian.dp.entity.VirtualWalletEntity;
+import com.brian.dp.entity.VirtualWalletTransactionEntity;
 import com.brian.dp.exception.BizException;
 import com.brian.dp.repository.VirtualWalletRepository;
 import com.brian.dp.repository.VirtualWalletTransactionRepository;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * service
@@ -53,8 +56,13 @@ public class VirtualWalletService {
         if(balance.compareTo(amount) < 0){
             throw new BizException("Err_001");
         }
-
-
+        VirtualWalletTransactionEntity virtualWalletTransactionEntity = new VirtualWalletTransactionEntity();
+        virtualWalletTransactionEntity.setAmount(amount);
+        virtualWalletTransactionEntity.setCreateTime(new Date());
+        virtualWalletTransactionEntity.setType(TransactionType.DEBIT);
+        virtualWalletTransactionEntity.setFromWalletId(walletId);
+        transactionRepository.saveTransaction(virtualWalletTransactionEntity);
+        walletRepo.updateBalance(walletId,balance.subtract(amount));
     }
 
 

@@ -21,4 +21,8 @@ public class VirtualWalletRepository {
     public BigDecimal getBalance(Long walletId) {
         return new BigDecimal(1000L);
     }
+
+    public boolean updateBalance(Long walletId,BigDecimal amount){
+        return true;
+    }
 }
