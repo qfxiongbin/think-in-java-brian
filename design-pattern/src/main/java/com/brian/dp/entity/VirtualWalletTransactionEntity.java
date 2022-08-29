@@ -17,4 +17,5 @@ public class VirtualWalletTransactionEntity {
     private Date createTime;
     private Enum type;
     private Long fromWalletId;
+    private Long toWalletId;
 }

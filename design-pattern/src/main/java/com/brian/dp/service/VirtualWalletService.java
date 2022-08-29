@@ -7,6 +7,7 @@ import com.brian.dp.entity.VirtualWalletTransactionEntity;
 import com.brian.dp.exception.BizException;
 import com.brian.dp.repository.VirtualWalletRepository;
 import com.brian.dp.repository.VirtualWalletTransactionRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -49,7 +50,7 @@ public class VirtualWalletService {
         return walletRepo.getBalance(walletId);
     }
 
-    //@Transaction
+    @Transactional(rollbackFor = Exception.class)
     public void debit(Long walletId,BigDecimal amount){
         VirtualWalletEntity walletEntity = walletRepo.getWalletEntity(walletId);
         BigDecimal balance = walletEntity.getBalance();
@@ -63,6 +64,32 @@ public class VirtualWalletService {
         virtualWalletTransactionEntity.setFromWalletId(walletId);
         transactionRepository.saveTransaction(virtualWalletTransactionEntity);
         walletRepo.updateBalance(walletId,balance.subtract(amount));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void credit(Long walletId, BigDecimal amount){
+        VirtualWalletTransactionEntity transactionEntity = new VirtualWalletTransactionEntity();
+        transactionEntity.setAmount(amount);
+        transactionEntity.setCreateTime(new Date());
+        transactionEntity.setType(TransactionType.CREDIT);
+        transactionEntity.setFromWalletId(walletId);
+        transactionRepository.saveTransaction(transactionEntity);
+        VirtualWalletEntity walletEntity = walletRepo.getWalletEntity(walletId);
+        BigDecimal balance = walletEntity.getBalance();
+        walletRepo.updateBalance(walletId,balance.add(amount));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void transfer(Long fromWalletId,Long toWalletId,BigDecimal amount){
+        VirtualWalletTransactionEntity transactionEntity = new VirtualWalletTransactionEntity();
+        transactionEntity.setAmount(amount);
+        transactionEntity.setCreateTime(new Date());
+        transactionEntity.setType(TransactionType.TRANSFER);
+        transactionEntity.setFromWalletId(fromWalletId);
+        transactionEntity.setToWalletId(toWalletId);
+        transactionRepository.saveTransaction(transactionEntity);
+        debit(fromWalletId,amount);
+        credit(toWalletId,amount);
     }
 
 
