@@ -19,7 +19,7 @@ public class Alert {
         this.notification = notification;
     }
 
-    public void check(String api, long requestCount, long errorCount, long durationOfSeconds){
+    public void check(String api, long requestCount, long errorCount,long timeoutCount, long durationOfSeconds){
         long tps = requestCount / durationOfSeconds;
         if(tps > rule.getMatchedRule(api).getMaxTps()){
             notification.notify(NotificationEmergencyLevel.URGENCY,"...");
@@ -27,6 +27,11 @@ public class Alert {
 
         if(errorCount > rule.getMatchedRule(api).getMaxErrorCount()){
             notification.notify(NotificationEmergencyLevel.SEVERE,"...");
+        }
+
+        long timeoutTps = timeoutCount / durationOfSeconds;
+        if(timeoutTps > rule.getMatchedRule(api).getMaxTimeoutTps()){
+            notification.notify(NotificationEmergencyLevel.URGENCY,"...");
         }
     }
 }
