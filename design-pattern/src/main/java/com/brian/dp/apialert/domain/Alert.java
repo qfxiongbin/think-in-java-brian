@@ -2,6 +2,7 @@ package com.brian.dp.apialert.domain;
 
 import com.brian.dp.apialert.constants.NotificationEmergencyLevel;
 import com.brian.dp.apialert.rule.AlertRule;
+import com.brian.dp.apialert.service.Notification;
 
 /**
  * API alert domain
