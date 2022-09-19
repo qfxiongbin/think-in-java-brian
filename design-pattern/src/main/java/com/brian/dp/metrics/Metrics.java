@@ -11,7 +11,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Metrics demo
+ * Metrics demo v1.0
  *
  * @author BrianX
  * @date 2022/09/19 11:47
