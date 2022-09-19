@@ -1,5 +1,6 @@
 package com.brian.dp.apialert.handler;
 
+import com.brian.dp.apialert.constants.NotificationEmergencyLevel;
 import com.brian.dp.apialert.domain.ApiStatInfo;
 import com.brian.dp.apialert.rule.AlertRule;
 import com.brian.dp.apialert.service.Notification;
@@ -18,6 +19,9 @@ public class TpsAlertHandler extends AbstractAlertHandler {
 
     @Override
     public void check(ApiStatInfo apiStatInfo) {
-
+        long tps = apiStatInfo.getRequestCount() / apiStatInfo.getDurationOfSeconds();
+        if(tps > rule.getMatchedRule(apiStatInfo.getApi()).getMaxTps()) {
+            notification.notify(NotificationEmergencyLevel.URGENCY,"......");
+        }
     }
 }
