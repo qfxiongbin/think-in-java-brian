@@ -20,7 +20,7 @@ public class RedisDistributedLock {
 
     public boolean lockTransaction(String id){
         //TODO
-        return false;
+        return true;
     }
 
     public void unlockTransaction(String id){

@@ -18,7 +18,7 @@ public class WalletRpcService {
     * @description TODO
     * @date 2022/9/21 16:27
     */
-    public String moveMoney(String id,Long buyerId,Long sellerId){
+    public String moveMoney(String id,Long buyerId,Long sellerId,double amount){
         return "123";
     }
 }
